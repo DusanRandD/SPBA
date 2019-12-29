@@ -1,5 +1,5 @@
 /*Project: "Single perceptron backpropogation algorithm"
-  Created by: Dušan Radivojeviæ, 12.2019.*/
+  Created by: Dusan Radivojevic, 12.2019.*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -36,18 +36,18 @@ int main(int argc, char *argv[]) {
 	printf("\t  \\w1\n");
 	printf("\t  \t( )=a\n");
 	printf("\t  /w2\n");
-	printf("\tX2\n");	
+	printf("\tX2\n");
 	printf("\nMy formula: a=sigmoid(X1*w1+X2*w2+b)\n");
 	printf("Please wait... ");
-	double b,w1,w2,a,a1,C,Average;                   
+	double b,w1,w2,a,a1,C,Average;
 	double ab=0,aw1=0,aw2=0;
 	int red=1,pr=1,r,X1,X2;
-	
+
 	/*Array vect[] is learning output set of values.Default values are
 	for OR logic gate, for AND would be {0,0,0,1}.
 	It is also posible to use NOR,NAND,NOTX1, and NOTX2*/
 	int vect[4]={0,1,1,1};
-	
+
 	/*Initial values of coeficients are randomly selected*/
 	srand(time(0));
 	b=(double)((rand()%6000)-3000)/1000.0;
@@ -61,7 +61,7 @@ int main(int argc, char *argv[]) {
 
 	/*Before first iteration clock is started.*/
 	clock_t start = clock();
-	
+
 	/*Iteration loop for finding optimal coefficients with backpropagation metod*/
 	while(pr==1){
 	r=0;
@@ -88,8 +88,8 @@ int main(int argc, char *argv[]) {
 	if(fabs(Average)<Cost){
 		pr=0;
 		}
-		
-	/*For each passage through the loop record values to txt file*/	
+
+	/*For each passage through the loop record values to txt file*/
 	fprintf (file_ptr, "%d\t%.8lf\t%.8lf\t%.8lf\t%.8lf\n",red,b,w1,w2,Average);
 	red++;
 	}
@@ -97,7 +97,7 @@ int main(int argc, char *argv[]) {
 	/*Stop the clock and calculate spent time*/
 	clock_t stop = clock();
 	double elapsed = (double)(stop - start) * 1000.0 / CLOCKS_PER_SEC;
-	
+
 	/*Print the values to terminal and close the txt file*/
 	printf("Thank you!\n");
 	printf("\nLearning is complete for: %.3lfsec\nNumber of iterations: %d",elapsed/1000.0,red-1);
