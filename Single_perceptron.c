@@ -7,11 +7,11 @@
 
 /*Lr is Learning rate.Usual range is from 0.1 (fast) to 0.00001 (slow) learnig rate.
   If output is throwing wrong value this coeficient should be decrease.*/
-#define Lr 1
+#define Lr 0.01
 
 /*Cost is a diference between average error of all learning examples and expected results.
  Less number causes beter precision but more iteration.*/
-#define Cost 0.000001
+#define Cost 0.0117
 
 /*sigmoid function compresses all values in 0 to 1 range.
   It is also known as activation function.*/
@@ -22,10 +22,9 @@ double sigmoid(double x){
 /*Out function is meant for checking obtained coefficients at the end of learning.
   It requires input values X1 and X2, coeficients b,w1,w2 and return output result
   according to the function of the neural cell.*/
-int Out(int X1,int X2,double b,double w1,double w2){
+double Out(int X1,int X2,double b,double w1,double w2){
 	double res=X1*w1+X2*w2+b;
-	if(sigmoid(res)>=0.5)return 1;
-	else return 0;
+	return sigmoid(res);
 }
 
 /*main function is meant for larning process, recording the learning flow,
@@ -48,11 +47,16 @@ int main(int argc, char *argv[]) {
 	It is also posible to use NOR,NAND,NOTX1, and NOTX2*/
 	int vect[4]={0,1,1,1};
 
-	/*Initial values of coeficients are randomly selected*/
+	/*Initial values of coeficients are randomly selected from -3 to 3*//*
 	srand(time(0));
 	b=(double)((rand()%6000)-3000)/1000.0;
 	w1=(double)((rand()%6000)-3000)/1000.0;
-	w2=(double)((rand()%6000)-3000)/1000.0;
+	w2=(double)((rand()%6000)-3000)/1000.0;*/
+	
+	/*Initial values are zeros*/
+	b=0;
+	w1=0;
+	w2=0;
 
 	/*Values from all iteration (Learning process) will be storage to
 	txt file, making it possible to analyze later.*/
@@ -71,10 +75,10 @@ int main(int argc, char *argv[]) {
 				a=X1*w1+X2*w2+b;
 				a1=sigmoid(a);
 				C=a1-vect[r];
-				Average+=C;
-				ab+=Lr*C;
-				aw1+=Lr*C*X1*a1;
-				aw2+=Lr*C*X2*a1;
+				Average+=pow(C,2);                          /*mean_squared_error*/
+				ab+=Lr*C*(exp(a)/pow((exp(a)+1),2));
+				aw1+=Lr*C*X1*(exp(a)/pow((exp(a)+1),2));
+				aw2+=Lr*C*X2*(exp(a)/pow((exp(a)+1),2));
 				r++;
 	    }
 	}
@@ -85,7 +89,7 @@ int main(int argc, char *argv[]) {
 	ab=0;
 	aw1=0;
 	aw2=0;
-	if(fabs(Average)<Cost){
+	if(Average<Cost){
 		pr=0;
 		}
 
@@ -105,10 +109,10 @@ int main(int argc, char *argv[]) {
 	printf("\nb=%.3lf\tw1=%.3lf\tw2=%.3lf",b,w1,w2);
 	printf("\nDetaild informations about iterations are in \"Iteration values.txt\"\n");
 	printf("\nCheck if output is the same like vect[%d,%d,%d,%d]",vect[0],vect[1],vect[2],vect[3]);
-	printf("\n0|0 => %d",Out(0,0,b,w1,w2));
-	printf("\n0|1 => %d",Out(0,1,b,w1,w2));
-	printf("\n1|0 => %d",Out(1,0,b,w1,w2));
-	printf("\n1|1 => %d\n\n",Out(1,1,b,w1,w2));
+	printf("\n0|0 => %.3lf",Out(0,0,b,w1,w2));
+	printf("\n0|1 => %.3lf",Out(0,1,b,w1,w2));
+	printf("\n1|0 => %.3lf",Out(1,0,b,w1,w2));
+	printf("\n1|1 => %.3lf\n\n",Out(1,1,b,w1,w2));
 	fprintf (file_ptr, "b\t\tw1\t\tw2\t\tminimum\t\ttime[ms]\n");
 	fprintf (file_ptr, "%lf\t%lf\t%lf\t%.6lf\t%.1f\n",b,w1,w2,Average,elapsed);
 	fclose(file_ptr);
