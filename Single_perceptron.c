@@ -1,12 +1,11 @@
 /*Project: "Single perceptron backpropogation algorithm"
-  Created by: Dusan Radivojevic, 12.2019.*/
+  Created by: Dusan Radivojevic, 01.2020.*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 #include <time.h>
 
-/*Lr is Learning rate.Usual range is from 0.1 (fast) to 0.00001 (slow) learnig rate.
-  If output is throwing wrong value this coeficient should be decrease.*/
+/*Lr is Learning rate.Usual range is from 0.1 (fast) to 0.00001 (slow).*/
 #define Lr 0.01
 
 /*Cost is a diference between average error of all learning examples and expected results.
@@ -52,7 +51,7 @@ int main(int argc, char *argv[]) {
 	b=(double)((rand()%6000)-3000)/1000.0;
 	w1=(double)((rand()%6000)-3000)/1000.0;
 	w2=(double)((rand()%6000)-3000)/1000.0;*/
-	
+
 	/*Initial values are zeros*/
 	b=0;
 	w1=0;
